@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Time Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #1b1f2a; /* Dark blue-gray */
+        }
+
+        .container {
+            width: 300px;
+            background-color: #2e3440; /* Darker gray */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            color: #eceff4; /* Light gray */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #81a1c1; /* Soft blue */
+        }
+
+        label {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 10px;
+            color: #d8dee9; /* Lighter gray */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #4c566a; /* Medium gray */
+            border-radius: 4px;
+            background-color: #3b4252; /* Dark gray */
+            color: #eceff4; /* Light gray */
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            color: #eceff4; /* Light gray */
+            background-color: #81a1c1; /* Soft blue */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #5e81ac; /* Deeper blue */
+        }
+
+        .secondary-button {
+            background-color: #434c5e; /* Medium gray */
+        }
+
+        .secondary-button:hover {
+            background-color: #4c566a; /* Slightly darker gray */
+        }
+
+        .time {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #88c0d0; /* Soft teal */
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="input-page">
+        <div class="time" id="current-time">08:15 AM</div>
+        <label for="employee-code">กรอกรหัสพนักงาน</label>
+        <input type="text" id="employee-code" placeholder="กรอกรหัสพนักงาน">
+        <button onclick="registerTime()">ลงเวลา</button>
+        <button class="secondary-button" onclick="goBack()">ย้อนกลับ</button>
+    </div>
+
+    <div class="container hidden" id="summary-page">
+        <div class="time" id="summary-time">08:15 AM</div>
+        <h1>ยืนยันการลงเวลา</h1>
+        <div id="employee-summary" style="font-size: 20px; font-weight: bold;"></div>
+        <button onclick="goToInputPage()">กลับไป</button>
+    </div>
+
+    <script>
+        // Set the current time dynamically
+        function updateTime() {
+            const timeElement = document.getElementById('current-time');
+            const summaryTimeElement = document.getElementById('summary-time');
+            const now = new Date();
+            const hours = now.getHours() % 12 || 12; // Convert 24-hour time to 12-hour format
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const amPm = now.getHours() >= 12 ? 'PM' : 'AM';
+            const currentTime = `${hours}:${minutes} ${amPm}`;
+
+            if (timeElement) timeElement.textContent = currentTime;
+            if (summaryTimeElement) summaryTimeElement.textContent = currentTime;
+        }
+
+        setInterval(updateTime, 1000); // Update time every second
+        updateTime(); // Initialize time immediately
+
+        function registerTime() {
+            const employeeCode = document.getElementById('employee-code').value;
+            if (employeeCode) {
+                document.getElementById('employee-summary').textContent = employeeCode;
+                document.getElementById('input-page').classList.add('hidden');
+                document.getElementById('summary-page').classList.remove('hidden');
+            } else {
+                alert('กรุณากรอกรหัสพนักงาน');
+            }
+        }
+
+        function goToInputPage() {
+            document.getElementById('summary-page').classList.add('hidden');
+            document.getElementById('input-page').classList.remove('hidden');
+        }
+
+        function goBack() {
+            alert('กลับไปหน้าก่อนหน้า');
+        }
+    </script>
+</body>
+</html>
